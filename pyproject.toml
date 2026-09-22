@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "eace"
+version = "0.2.0-dev"
+description = "Evidence-Anchored Agent Containment Evaluation: a local, adversarial framework for testing agent capability boundaries, evidence integrity, reproducibility, and verifier validity."
+readme = "README.md"
+license = {text = "MIT"}
+requires-python = ">=3.10"
+authors = [
+    {name = "EACE Research"}
+]
+keywords = [
+    "ai-safety",
+    "agent-evaluation",
+    "agent-security",
+    "containment",
+    "adversarial-testing",
+    "verification",
+    "reproducibility",
+    "evidence",
+    "security-research",
+    "local-ai",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering",
+]
+
+[project.optional-dependencies]
+test = ["pytest>=7.0"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["eace*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py", "tests_*.py"]
+addopts = "-q"
