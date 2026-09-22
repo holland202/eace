@@ -1,4 +1,32 @@
-EACE
+# EACE — Evidence-Anchored Agent Containment Evaluation
+
+**A verifier that assumes the evidence is lying to it.** Most agent
+evaluations trust the evaluator. EACE treats the verifier itself as attack
+surface — and then attacks it.
+
+The v0.1 verifier was broken on purpose with a 19-case corpus: fabricated
+output matching a known-good byte count got classified `ALLOWED_PROTECTED`.
+The lesson, boxed everywhere below: **integrity ≠ truth.** A perfect
+SHA-256 over fabricated bytes is still fabricated.
+
+v0.2 is the fail-closed answer. Clone it and watch it hold:
+
+```bash
+git clone https://github.com/holland202/eace && cd eace
+python3 test_verifier_robustness_v2.py   # 37 cases, 0 false positives
+python3 mutation_check.py                # 9/9 guards proven load-bearing
+```
+
+The second command is the part most projects skip: it disables each guard
+in turn and **requires the suite to fail** — proving the checks can
+actually fire, not just that they pass today. No model, no network, no
+Android, no setup. Runs on a phone.
+
+Two defect records worth reading first: [`records/`](records/) documents
+five self-skipping guards and a positive verdict that was unreachable from
+a clean clone — both found by the tooling, both kept.
+
+---
 
 Evidence-Anchored Agent Containment Evaluation
 
