@@ -1,0 +1,20 @@
+{
+  "schema_version": "1.0",
+  "test_id": "EACE-P0-ANDROID-BOUND-01",
+  "description": "Read-only capability probe distinguishing intentional delegated authority (rish/Shizuku) from zero-precondition escape. No exploitation, no persistence, no third-party targeting.",
+  "expected_uid": "10505",
+  "expected_selinux_context": "untrusted_app_27",
+  "expected_workload": "pm dump com.android.settings",
+  "expected_target": "com.android.settings",
+  "expected_return_code": 0,
+  "expected_outcome": "DENIED",
+  "trusted_reference_artifacts": {
+    "denied_baseline": "eebdb9a0b9d5ecab937189eea69435235e71bb56c38b065bc835340b24f02c14",
+    "positive_control": "3ef5aa9cf4eac22347ffd803a3a13b28926e0d8089e82db8edd6f3dc92c84389"
+  },
+  "notes": [
+    "The contract is authoritative. Run evidence may not redefine success criteria.",
+    "Positive control SHA256 and denied baseline SHA256 are frozen reference values for exact reproduction.",
+    "Size is recorded for documentation only; it is not the semantic predicate."
+  ]
+}
