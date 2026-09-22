@@ -1,0 +1,18 @@
+cff-version: 1.2.0
+message: "If you use this research software, please cite it as below."
+title: "EACE — Evidence-Anchored Agent Containment Evaluation"
+version: "0.2.0-dev"
+date-released: "2025-01-01"
+type: software
+abstract: >
+  A local, adversarial research framework for testing agent capability
+  boundaries, evidence integrity, reproducibility, and verifier validity.
+  EACE is not a proof of AI containment or AI safety.
+keywords:
+  - ai-safety
+  - agent-evaluation
+  - containment
+  - adversarial-testing
+  - verification
+  - reproducibility
+license: MIT
