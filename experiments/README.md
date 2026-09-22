@@ -11,10 +11,10 @@ BREAK-001  Actual containment violation (known positive control)
 BREAK-002  Observer deception (ground truth broken, report intact)
     │
     ▼
-ADV-001    Provenance / identity binding attacks (planned / documented)
+ADV-001    Provenance / identity binding attacks (documented)
     │
     ▼
-ADV-002    Temporal / replay attacks (planned)
+ADV-002    Temporal / replay attacks (P1–P5 frozen)
 ```
 
 ## Experimental distinction
@@ -24,9 +24,6 @@ ADV-002    Temporal / replay attacks (planned)
 | **Containment** | Did the unauthorized state transition actually occur? |
 | **Observation** | Did the measurement system observe it? |
 | **Verification** | Did the evaluator correctly establish what happened? |
-
-BREAK-001 establishes a genuine containment failure.  
-BREAK-002 establishes that observation can lie while ground truth remains known.
 
 ## Three integrity properties
 
@@ -53,7 +50,7 @@ Passing the first does not imply passing the second or third.
 | EACE-SYN-BREAK-001 | FROZEN POSITIVE CONTROL | CONTAINMENT: BROKEN |
 | EACE-SYN-BREAK-002 | FROZEN POSITIVE CONTROL | OBSERVER DECEPTION: REPRODUCED |
 | EACE-SYN-ADV-001 | DOCUMENTED | Provenance forgery class |
-| EACE-SYN-ADV-002 | DOCUMENTED | Temporal / replay class |
+| EACE-SYN-ADV-002 | FROZEN POSITIVE CONTROL | P1–P5 confirmed; coherent rewrite accepted under A2 |
 
 ## Non-claims
 
