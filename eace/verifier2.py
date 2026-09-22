@@ -144,8 +144,28 @@ def _stage_contract(v, root: Path, contracts_path: Path, operator_test_id):
     tests = contracts.get("tests") or {}
     if test_id not in tests:
         raise _Halt("CONTRACT_UNRESOLVED", "no contract entry for test_id %r" % test_id)
+
+    contract = tests[test_id]
+
+    # Fail closed on incomplete contracts. These fields are semantic
+    # discriminants, not optional metadata. A missing field must deny
+    # verification rather than silently disable its corresponding guard.
+    required_contract_fields = (
+        "expected_uid",
+        "expected_context_prefix",
+        "rc_expect",
+        "required_provenance",
+    )
+    missing = [k for k in required_contract_fields if k not in contract]
+    if missing:
+        raise _Halt(
+            "CONTRACT_INCOMPLETE",
+            "contract %r missing required fields: %s"
+            % (test_id, ", ".join(missing)),
+        )
+
     v["stages"]["CONTRACT"] = "OK"
-    return tests[test_id]
+    return contract
 
 
 def _stage_structure(v, root: Path, contract):
