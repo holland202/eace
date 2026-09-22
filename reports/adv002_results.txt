@@ -1,0 +1,50 @@
+EACE-SYN-ADV-002 results
+========================
+Environment: CONTAINER ONLY (x86_64 / Python 3.12)
+NOT reproduced on device (aarch64 / Python 3.14).
+Do not cite these numbers as device-verified until re-run on device.
+
+Module SHA-256:
+  eace/temporal.py  617922bed8bbba877a1ea86999d78e3b13cb25ba0049aebf48c3c788e991bb2b
+  run_attacks.py    4833549110255567d6ea33e24593cd5d5a515a5106ba3ffacf552429cd6e5ebd
+
+Attack matrix (7 attacks × 3 adversary models)
+
+Attack                 Model                 Result     First fail
+----------------------------------------------------------------------
+1_REPLAY               A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+1_REPLAY               A2_FULL_REWRITE       CAUGHT     V4_FRESHNESS
+1_REPLAY               A2P_PRECOMMIT         CAUGHT     V4_FRESHNESS
+2_REORDER              A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+2_REORDER              A2_FULL_REWRITE       CAUGHT     V2_DAG
+2_REORDER              A2P_PRECOMMIT         CAUGHT     V2_DAG
+3_STALE                A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+3_STALE                A2_FULL_REWRITE       CAUGHT     V4_FRESHNESS
+3_STALE                A2P_PRECOMMIT         CAUGHT     V4_FRESHNESS
+4_FUTURE               A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+4_FUTURE               A2_FULL_REWRITE       CAUGHT     V4_FRESHNESS
+4_FUTURE               A2P_PRECOMMIT         CAUGHT     V4_FRESHNESS
+5_DUPLICATE            A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+5_DUPLICATE            A2_FULL_REWRITE       CAUGHT     V4_FRESHNESS
+5_DUPLICATE            A2P_PRECOMMIT         CAUGHT     V4_FRESHNESS
+6_GAP                  A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+6_GAP                  A2_FULL_REWRITE       CAUGHT     V6_STATE_CONTINUITY
+6_GAP                  A2P_PRECOMMIT         CAUGHT     V6_STATE_CONTINUITY
+7_COHERENT_REWRITE     A1_PAYLOAD_ONLY       CAUGHT     V1_CHAIN
+7_COHERENT_REWRITE     A2_FULL_REWRITE       ACCEPTED   -
+7_COHERENT_REWRITE     A2P_PRECOMMIT         CAUGHT     V8_PRECOMMIT
+
+Predictions
+  P1 A1 catches partial attacks at V1_CHAIN     : CONFIRMED
+  P2 A2 defeats V1_CHAIN                        : CONFIRMED
+  P3 Coherent rewrite passes internal checks    : CONFIRMED (A2 ACCEPTED)
+  P4 A2P catches every attack                   : CONFIRMED
+  P5 Honest run validates clean                 : CONFIRMED
+  P6 Coherent-rewrite FALSE POSITIVE            : NOT TESTED
+
+Bottom line
+  Internal chain stops A1 only.
+  Semantic checks stop partial A2 edits only.
+  External precommit (V8) stops full rewrite when head left forger control.
+  Attack 7 under A2 is the residual open door for concealment (false negative).
+  Fabrication false positive (P6) remains unrun.
