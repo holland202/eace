@@ -36,7 +36,23 @@ The initial verifier ("v0.1") has also been subjected to an adversarial attack c
 
 That failure is intentionally preserved as part of the research record.
 
-The next development target is a fail-closed verifier ("v0.2") designed from those failures.
+Two fail-closed verifier implementations now exist, and they are not
+reconciled:
+
+- `VerifierV02` in `eace/verifier.py` — dict interface, covered by the
+  existing test suite.
+- `eace/verifier2.py` — on-disk evidence-bundle interface, 37-case
+  regression suite, mutation-checked.
+
+The second was added by commit `1991750`, built against an earlier version
+of this README that listed v0.2 as an unstarted development target. It was
+not. That is itself a recorded finding: a stale summary produced a
+duplicate component. See commit `8f6b0e3`.
+
+Both have been probed and both carry defects. Neither is designated
+canonical. See `records/EACE-REC-001.md` and `records/EACE-REC-002.md`.
+
+The original next development target was a fail-closed verifier ("v0.2") designed from those failures.
 
 Current research status
 
@@ -52,7 +68,7 @@ Zero-precondition Android escape| Not observed
 Android sandbox escape| Not established
 Android vulnerability| Not established
 Verifier v0.1| Adversarially broken
-Verifier v0.2| Development target
+Verifier v0.2| Two unreconciled implementations; see records/EACE-REC-001.md, -002.md
 Independent verification of complete framework| Not established
 
 ---
@@ -881,12 +897,18 @@ eace/
 │   ├── governor.py
 │   ├── ledger.py
 │   ├── synthetic_services.py
-│   └── verifier.py
+│   ├── verifier.py          # VerifierV01 + VerifierV02
+│   └── verifier2.py         # second v0.2, unreconciled (REC-002)
 │
 ├── records/
 ├── reports/
 ├── contracts/
 ├── tests/
+│
+├── probe_v02_guards.py            # REC-001 reproduction
+├── probe_verifier2_guards.py      # REC-002 reproduction
+├── test_verifier_robustness_v2.py # 37-case regression
+├── mutation_check.py              # guard mutation check
 │
 ├── CITATION.cff
 ├── CONTRIBUTING.md
@@ -911,7 +933,19 @@ Run the test suite:
 
 python -m unittest discover -v
 
-The exact test inventory will expand as the verifier qualification work progresses.
+Additional suites, runnable from a clean clone with no configuration:
+
+    python3 test_verifier_robustness_v2.py   # 37 cases, 0 false positives
+    python3 mutation_check.py                # 9/9 guards load-bearing
+    python3 probe_v02_guards.py              # EACE-REC-001 reproduction
+    python3 probe_verifier2_guards.py        # EACE-REC-002 reproduction
+
+The two probes carry controls. If a control row does not read "as
+expected", the probe's model of the verifier is wrong and every other row
+in that run is NOT TESTED rather than a finding.
+
+The exact test inventory will expand as the verifier qualification work
+progresses.
 
 ---
 
@@ -1098,16 +1132,24 @@ v0.1 — Foundation
 
 v0.2 — Verifier Hardening
 
-- [ ] External test contracts
-- [ ] Strict identity validation
-- [ ] Semantic evidence predicates
-- [ ] Provenance binding
-- [ ] Exact claim parsing
-- [ ] Fail-closed verdict model
-- [ ] v0.1 regression suite
-- [ ] Novel adversarial attack suite
-- [ ] Ground-truth corpus
-- [ ] TP/FP/TN/FN evaluation
+- [x] External test contracts
+- [x] Strict identity validation
+- [x] Semantic evidence predicates
+- [x] Provenance binding
+- [x] Exact claim parsing
+- [x] Fail-closed verdict model
+- [x] v0.1 regression suite
+- [x] Novel adversarial attack suite
+- [ ] Ground-truth corpus (exists; container-only, not run on device)
+- [ ] TP/FP/TN/FN evaluation (exists; container-only, not run on device)
+- [ ] Contract completeness validation (EACE-REC-002: four gates skip
+      silently when the contract omits a field)
+- [ ] Reachable, tested positive verdict for VerifierV02 (EACE-REC-001
+      Finding 2: neither control artifact is committed and the suite
+      asserts COMPLIANT zero times)
+- [ ] Resolve the two components claiming version 0.2
+- [ ] Symmetric adversarial probe written by someone other than the
+      implementation author (EACE-REC-002 O5)
 
 v0.3 — Independent Measurement
 
